@@ -1,0 +1,29 @@
+#container {
+    background-color: rgb(167, 178, 15);
+    /* box-shadow: inset 3em 1.5em rgb(255, 255, 255) ; */
+    margin: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    border-radius: 10px;
+}
+
+.config-section {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+}
+
+.organisms-section {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+
+}
+
+.button-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}

@@ -1,0 +1,51 @@
+#container {
+    background-color: rgb(1, 170, 66);
+    /* box-shadow: inset 3em 1.5em rgb(255, 255, 255) ; */
+    margin: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.map-section {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 0fr);
+    margin: 0.0rem;
+    padding: 0.0rem;
+}
+
+.cell-button {
+    background-color: rgb(57, 57, 57);
+    border: solid rgb(0, 0, 0) 1px;
+    margin: 0rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    /* border-radius: 1rem;/ */
+}
+
+.cell-button--alive {
+    background-color: rgb(255, 238, 0);
+}
+
+.data-entry-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.data-entry-section > * {
+    margin-inline: 0.1rem;
+    font-size: 0.75rem;
+}
+
+.data-entry {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    margin-top: 1rem;
+}
+
+.data-entry--slider-label {
+    width: 5rem;
+}
