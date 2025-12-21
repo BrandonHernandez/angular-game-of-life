@@ -8,18 +8,22 @@ main {
   padding: 1rem;
   box-sizing: inherit;
   position: relative;
-  background-color: rgb(0, 221, 255);
+  background-color: rgb(0, 0, 0);
 }
 
 .content {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  /* grid-template-columns: repeat(2, 1fr); */
+  display: grid;
+  /* display: flex; */
+  grid-template-columns: repeat(5, 1fr);
+  /* flex-wrap: wrap; */
   width: 100%;
   /* max-width: 900px; */
   /* margin-bottom: 3rem; */
-  border: 1px dashed black;
+  border: 1px dashed rgb(255, 255, 255);
+  border-radius: 5px;
   padding: 10px;
+}
+
+.content > :nth-child(2) {
+  grid-column: 3 / 5;
 }

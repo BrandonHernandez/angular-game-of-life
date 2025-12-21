@@ -2,9 +2,12 @@
     <div class="config-section">
         <h3>Settings</h3>
         <div class="button-group">
-            <button>Flip the rules</button>
-            <button>Insert row</button>
-            <button>Insert column</button>
+            <button (click)="onRemRow()">- Row</button>
+            <button (click)="onAddRow()">+ Row</button>
+        </div>
+        <div class="button-group">
+            <button (click)="onRemColumn()">- Column</button>
+            <button (click)="onAddColumn()">+ Column</button>
         </div>
     </div>
     <div class="organisms-section">

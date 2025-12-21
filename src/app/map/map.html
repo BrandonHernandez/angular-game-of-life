@@ -1,9 +1,9 @@
 <div id="container">
-    <div class="map-section" style="--cols: {{ cols() }};">
-        @for (row of cellMap(); let rowIndex = $index; track trackRow(rowIndex)) { 
-            @for (cell of row; let colIndex = $index; track trackCell(colIndex)) {
+    <div class="map-section" style="--cols: {{ getMap()[0].length }};">
+        @for (row of getMap(); let rowIndex = $index; track rowIndex) { 
+            @for (cell of row; let colIndex = $index; track colIndex) {
                 <button 
-                    [class]="cell.state === true ? 'cell-button cell-button--alive' : 'cell-button'" 
+                    [class]="cell ? 'cell-button cell-button--alive' : 'cell-button'" 
                     (click)="onCellClick(rowIndex, colIndex)">
                 </button>
             } 
@@ -13,8 +13,8 @@
         <button class="data-entry" (click)="saveMap()">Save</button>
         <button class="data-entry" (click)="loadMap()">Load</button>
         <button class="data-entry" (click)="clearMap()">Clear</button>
-        <button [disabled]="this.isPlaying" class="data-entry" (click)="play()">Play</button>
-        <button [disabled]="!this.isPlaying" class="data-entry" (click)="stop()">Stop</button>
+        <button [disabled]="isGameRunning()" class="data-entry" (click)="play()">Play</button>
+        <button [disabled]="!isGameRunning()" class="data-entry" (click)="stop()">Stop</button>
         <button class="data-entry" (click)="stepFwd()">Step</button>
     </div>
     <div class="data-entry-section">
@@ -24,7 +24,7 @@
             name="tick-rate-entry"
             type="range"
             min="0"
-            max="1000"
+            max="500"
             step="1"
             [(ngModel)]="tickRateRaw"
             (change)="onTickRateChange()"
@@ -33,7 +33,7 @@
             class="data-entry data-entry--slider-label" 
             for="tick-rate-entry"
         >
-            {{ this.tickRate() }} ms
+            {{ tickRate() }} ms
         </label>
 
     </div>
