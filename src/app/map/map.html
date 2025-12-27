@@ -4,7 +4,10 @@
             @for (cell of row; let colIndex = $index; track colIndex) {
                 <button 
                     [class]="cell ? 'cell-button cell-button--alive' : 'cell-button'" 
-                    (click)="onCellClick(rowIndex, colIndex)">
+                    (pointerdown)="onCellClick(rowIndex, colIndex)"
+                    (pointerdown)="onPointerDown()"
+                    (mouseenter)="onCellHover(rowIndex, colIndex)"
+                >
                 </button>
             } 
         }   

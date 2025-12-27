@@ -2,6 +2,8 @@ import { Injectable, signal, Signal, WritableSignal, computed } from "@angular/c
 
 type Cell = 1 | 0;
 
+type GeneratePattern = "glider" | "lwSpaceship" | "none";
+
 @Injectable({ providedIn: 'root' })
 export class GameDataService {
 
@@ -12,6 +14,13 @@ export class GameDataService {
     private gameRunning = false;
 
     private tickRate = 100;
+
+    private selectedRow = 0;
+    private selectedCol = 0;
+
+
+    private createPattern: GeneratePattern = "none";
+    private creatingPattern: boolean =  false;
 
     public loadMap() {
         const cellMap = localStorage.getItem("cellMap");
@@ -31,9 +40,7 @@ export class GameDataService {
     }
 
     public play() {
-        this.intervalID = setInterval(() => {
-          this.developUniverse();
-        }, this.tickRate);
+        this.intervalID = setInterval(() => this.developUniverse(), this.tickRate);
         this.gameRunning = true;
     }
 
@@ -72,8 +79,7 @@ export class GameDataService {
         this.initNextMap();
         for (let i = 0; i < this.cellMap().length; i++) {
             for (let j = 0; j < this.cellMap()[i].length; j++) {
-                let neighbors = this.countNeighbors(i, j);
-                this.computeNextGen(i, j, neighbors);
+                this.computeNextGen(i, j, this.countNeighbors(i, j));
             }
         }
         this.cellMap.set(this.nextCellMap());
@@ -107,56 +113,56 @@ export class GameDataService {
         iDynamic = (i - 1 < 0) ? iMax : i - 1;
         jDynamic = (j - 1 < 0) ? jMax : j - 1;
         if (this.cellMap()[iDynamic][jDynamic]) {
-        neighbors++;
+            neighbors++;
         }
 
         // [i-1,_j_] : N
         iDynamic = (i - 1 < 0) ? iMax : i - 1;
         jDynamic = j;
         if (this.cellMap()[iDynamic][jDynamic]) {
-        neighbors++;
+            neighbors++;
         }
 
         // [i-1,j+1] : NE
         iDynamic = (i - 1 < 0) ? iMax : i - 1;
         jDynamic = (j + 1 > jMax) ? 0 : j + 1;
         if (this.cellMap()[iDynamic][jDynamic]) {
-        neighbors++;
+            neighbors++;
         }
 
         // [_i_,j-1] : W
         iDynamic = i;
         jDynamic = (j - 1 < 0) ? jMax : j - 1;
         if (this.cellMap()[iDynamic][jDynamic]) {
-        neighbors++;
+            neighbors++;
         }
 
         // [_i_,j+1] : E
         iDynamic = i;
         jDynamic = (j + 1 > jMax) ? 0 : j + 1;
         if (this.cellMap()[iDynamic][jDynamic]) {
-        neighbors++;
+            neighbors++;
         }
 
         // [i+1,j-1] : SW
         iDynamic = (i + 1 > iMax) ? 0 : i + 1;
         jDynamic = (j - 1 < 0) ? jMax : j - 1;
         if (this.cellMap()[iDynamic][jDynamic]) {
-        neighbors++;
+            neighbors++;
         }
 
         // [i+1,_j_] : S
         iDynamic = (i + 1 > iMax) ? 0 : i + 1;
         jDynamic = j;
         if (this.cellMap()[iDynamic][jDynamic]) {
-        neighbors++;
+            neighbors++;
         }
 
         // [i+1,j+1] : SE   
         iDynamic = (i + 1 > iMax) ? 0 : i + 1;
         jDynamic = (j + 1 > jMax) ? 0 : j + 1;
         if (this.cellMap()[iDynamic][jDynamic]) {
-        neighbors++;
+            neighbors++;
         }
 
         return neighbors;
@@ -236,5 +242,73 @@ export class GameDataService {
         for (let i = 0; i < rows; i++) {
             this.cellMap()[i].pop();
         }
+    }
+
+    public setCoordinates(row: number, col: number) {
+        this.selectedRow = row;
+        this.selectedCol = col;
+    }
+
+    public generateGlider() {
+        const row = this.selectedRow;
+        const col =  this.selectedCol;
+
+        this.cellMap()[row][col] = 1 as Cell;
+        this.cellMap()[(row + 1) % this.cellMap().length][col] = 1 as Cell;
+        this.cellMap()[(row + 2) % this.cellMap().length][col] = 1 as Cell;
+        this.cellMap()[(row + 2) % this.cellMap().length][(col + 1) % this.cellMap()[0].length] = 1 as Cell;
+        this.cellMap()[(row + 1) % this.cellMap().length][(col + 2) % this.cellMap()[0].length] = 1 as Cell;
+    }
+
+    public generateLwSpaceShip() {
+        const row = this.selectedRow;
+        const col =  this.selectedCol;
+        
+        this.cellMap()[row][col] = 1 as Cell;
+        this.cellMap()[(row + 1) % this.cellMap().length][col] = 1 as Cell;
+        this.cellMap()[(row + 2) % this.cellMap().length][col] = 1 as Cell;
+        this.cellMap()[(row + 3) % this.cellMap().length][col] = 1 as Cell;
+
+        this.cellMap()[row][(col + 1) % this.cellMap()[0].length] = 1 as Cell;
+        this.cellMap()[(row + 4) % this.cellMap().length][(col + 1) % this.cellMap()[0].length] = 1 as Cell;
+        
+        this.cellMap()[row][(col + 2) % this.cellMap()[0].length] = 1 as Cell;
+
+        this.cellMap()[(row + 1) % this.cellMap().length][(col + 3) % this.cellMap()[0].length] = 1 as Cell;
+        this.cellMap()[(row + 4) % this.cellMap().length][(col + 3) % this.cellMap()[0].length] = 1 as Cell;
+    }
+
+    public startPatternCreate_Glider() {
+        this.createPattern = "glider";
+        this.creatingPattern = true;
+    }
+
+    public startPatternCreate_LwSpaceship() {
+        this.createPattern = "lwSpaceship";
+        this.creatingPattern = true;
+    }
+
+    public cancelPatternCreate() {
+        this.createPattern = "none";
+        this.creatingPattern = false;
+    }
+
+    public finishPatternCreate() {
+        switch (this.createPattern) {
+            case "glider":
+                this.generateGlider();
+                break;
+            case "lwSpaceship":
+                this.generateLwSpaceShip();
+                break;
+            default:
+                break;
+        }
+        // Commenting this line allows to create the last selected pattern continuously.
+        // this.cancelPatternCreate();
+    }
+
+    public isPatternCreateInProgress() {
+        return (this.creatingPattern && this.createPattern !== "none");
     }
 }

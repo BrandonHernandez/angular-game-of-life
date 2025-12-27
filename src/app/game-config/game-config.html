@@ -13,8 +13,19 @@
     <div class="organisms-section">
         <h3>Organisms</h3>
         <div class="button-group">
-            <button>A</button>
-            <button>B</button>
+            <button 
+                (pointerdown)="onGliderPointerDown()"
+                [disabled]="isPatternCreateInProgress()"
+
+            >
+                Glider
+            </button>
+            <button
+                (pointerdown)="onLwSpaceshipPointerDown()"
+                [disabled]="isPatternCreateInProgress()"
+            >
+                Lightweight Spaceship
+            </button>
             <button>C</button>
             <button>D</button>
         </div>

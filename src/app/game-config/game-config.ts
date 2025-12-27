@@ -26,4 +26,32 @@ export class GameConfig {
     this.gameDataService.remColumn();
   }
 
+  // public onGliderPointerDown() {
+  //   if (!this.getGliderPointerDown()) {
+  //     this.gameDataService.setGliderPointerDown();
+  //   } else {
+  //     this.gameDataService.unsetGliderPointerDownFromConfig();
+  //   }
+  // }
+
+  public isPatternCreateInProgress() {
+    return this.gameDataService.isPatternCreateInProgress();
+  }
+
+  public onGliderPointerDown() {
+    if (!this.isPatternCreateInProgress()) {
+      this.gameDataService.startPatternCreate_Glider();
+    } else {
+      this.gameDataService.cancelPatternCreate();
+    }
+  }
+
+  public onLwSpaceshipPointerDown() {
+    if (!this.isPatternCreateInProgress()) {
+      this.gameDataService.startPatternCreate_LwSpaceship();
+    } else {
+      this.gameDataService.cancelPatternCreate();
+    }
+  }
+
 }

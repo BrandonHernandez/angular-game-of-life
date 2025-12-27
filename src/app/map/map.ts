@@ -46,22 +46,30 @@ export class Map {
   public clearMap() {
     this.gameDataService.clearMap();
   }
-
-  public onCellClick(row: number, col: number) {
-    this.gameDataService.flipCell(row, col);
-  }
-
+  
   public onTickRateChange() {
     const tickRate = 500 - this.tickRateRaw();
     this.gameDataService.onTickRateChange(tickRate);
   }
-
+  
   public isGameRunning(): boolean {
     return this.gameDataService.getIsGameRunning();
   }
-
+  
   public tickRate(): number {
     return this.gameDataService.getTickRate();
+  }
+  
+  public onCellClick(row: number, col: number) {
+    this.gameDataService.flipCell(row, col);
+  }
+
+  public onCellHover(row: number, col: number) {
+    this.gameDataService.setCoordinates(row, col);
+  }
+
+  public onPointerDown() {
+    this.gameDataService.finishPatternCreate();
   }
 
 }
