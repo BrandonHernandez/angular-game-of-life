@@ -1,13 +1,12 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { Map } from './map/map';
-import { GameConfig } from './game-config/game-config';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Map, GameConfig],
+  imports: [Map],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
   protected readonly title = signal('game-of-life');

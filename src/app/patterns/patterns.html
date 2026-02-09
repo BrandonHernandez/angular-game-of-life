@@ -1,0 +1,28 @@
+<dialog open>
+  <div id="container">
+    <div class="options-section">
+      <h3>patterns</h3>
+      <div class="button-group">
+        <button
+          class="data-entry"
+          [class.active]="activePattern() === 'glider'"
+          (click)="onClickPattern('glider')"
+        >
+          Glider
+        </button>
+        <button
+          class="data-entry"
+          [class.active]="activePattern() === 'lwSpaceship'"
+          (click)="onClickPattern('lwSpaceship')"
+        >
+          Lightweight Spaceship
+        </button>
+      </div>
+    </div>
+    <div class="options-section">
+      <div class="button-group">
+        <button (click)="onClose()">Close</button>
+      </div>
+    </div>
+  </div>
+</dialog>

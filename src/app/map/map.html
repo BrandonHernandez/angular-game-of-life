@@ -1,43 +1,127 @@
+@switch (activeDialog()) {
+  @case ('options') {
+    <app-options (close)="dialog()" />
+  }
+  @case ('patterns') {
+    <app-patterns (close)="dialog()" />
+  }
+}
 <div id="container">
-    <div class="map-section" style="--cols: {{ getMap()[0].length }};">
-        @for (row of getMap(); let rowIndex = $index; track rowIndex) { 
-            @for (cell of row; let colIndex = $index; track colIndex) {
-                <button 
-                    [class]="cell ? 'cell-button cell-button--alive' : 'cell-button'" 
-                    (pointerdown)="onCellClick(rowIndex, colIndex)"
-                    (pointerdown)="onPointerDown()"
-                    (mouseenter)="onCellHover(rowIndex, colIndex)"
-                >
-                </button>
-            } 
-        }   
+  <div
+    class="map-section"
+    style="--cols: {{ cellMap()[0].length }};"
+    (contextmenu)="onRightClick()"
+  >
+    @for (row of cellMap(); let rowIndex = $index; track rowIndex) {
+      @for (cell of row; let colIndex = $index; track colIndex) {
+        <div
+          class="cell-button"
+          [class.cell-button--alive]="cell"
+          (click)="onClick(rowIndex, colIndex)"
+        ></div>
+      }
+    }
+  </div>
+  <div id="footer">
+    <div class="footer-section">
+      <div class="info-section">
+        <div>Rows={{ rows() }} Cols={{ cols() }}</div>
+        <div class="status-display">
+          {{ info() }}
+        </div>
+      </div>
     </div>
-    <div class="data-entry-section">
-        <button class="data-entry" (click)="saveMap()">Save</button>
-        <button class="data-entry" (click)="loadMap()">Load</button>
-        <button class="data-entry" (click)="clearMap()">Clear</button>
-        <button [disabled]="isGameRunning()" class="data-entry" (click)="play()">Play</button>
-        <button [disabled]="!isGameRunning()" class="data-entry" (click)="stop()">Stop</button>
-        <button class="data-entry" (click)="stepFwd()">Step</button>
-    </div>
-    <div class="data-entry-section">
-        <input
-            class="data-entry"
-            id="tick-rate-entry"
-            name="tick-rate-entry"
-            type="range"
-            min="0"
-            max="500"
-            step="1"
-            [(ngModel)]="tickRateRaw"
-            (change)="onTickRateChange()"
-        />
-        <label 
-            class="data-entry data-entry--slider-label" 
-            for="tick-rate-entry"
+    <div class="footer-section">
+      <div class="data-entry-section">
+        <button
+          class="data-entry"
+          (click)="saveMap()"
+          (mouseenter)="mouseEnter('save')"
+          (mouseleave)="mouseLeave()"
         >
-            {{ tickRate() }} ms
+          save
+        </button>
+        <button
+          class="data-entry"
+          (click)="loadMap()"
+          (mouseenter)="mouseEnter('load')"
+          (mouseleave)="mouseLeave()"
+        >
+          load
+        </button>
+        <button
+          class="data-entry"
+          (click)="clearMap()"
+          (mouseenter)="mouseEnter('clear')"
+          (mouseleave)="mouseLeave()"
+        >
+          clear
+        </button>
+        <button
+          [disabled]="isGameRunning()"
+          class="data-entry"
+          (click)="play()"
+          (mouseenter)="mouseEnter('play')"
+          (mouseleave)="mouseLeave()"
+        >
+          play
+        </button>
+        <button
+          [disabled]="!isGameRunning()"
+          class="data-entry"
+          (click)="stop()"
+          (mouseenter)="mouseEnter('stop')"
+          (mouseleave)="mouseLeave()"
+        >
+          stop
+        </button>
+        <button
+          class="data-entry"
+          (click)="stepFwd()"
+          (mouseenter)="mouseEnter('step')"
+          (mouseleave)="mouseLeave()"
+        >
+          step
+        </button>
+        <button
+          class="data-entry"
+          [class.active]="activeDialog() === 'options'"
+          (click)="dialog('options')"
+          (mouseenter)="mouseEnter('options')"
+          (mouseleave)="mouseLeave()"
+        >
+          options
+        </button>
+        <button
+          class="data-entry"
+          [class.active]="activeDialog() === 'patterns'"
+          (click)="dialog('patterns')"
+          (mouseenter)="mouseEnter('patterns')"
+          (mouseleave)="mouseLeave()"
+        >
+          patterns
+        </button>
+      </div>
+      <div class="data-entry-section">
+        <input
+          class="data-entry"
+          id="tick-rate-entry"
+          name="tick-rate-entry"
+          type="range"
+          [min]="minTickRate"
+          [max]="maxTickRate"
+          step="1"
+          (change)="onTickRateChange($event)"
+          [value]="maxTickRate"
+          (mouseenter)="mouseEnter('tick-rate-entry')"
+          (mouseleave)="mouseLeave()"
+        />
+      </div>
+      <div class="data-entry-section">
+        <label class="data-entry data-entry--slider-label" for="tick-rate-entry">
+          {{ tickRate() }}
         </label>
-
+      </div>
     </div>
+  </div>
 </div>

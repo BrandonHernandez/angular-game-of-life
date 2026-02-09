@@ -1,0 +1,22 @@
+<dialog open>
+  <div id="container">
+    <div class="options-section">
+      <h3>settings</h3>
+      <div class="button-group">
+        <button (click)="onRemRow()">- row</button>
+        <button (click)="onAddRow()">+ row</button>
+      </div>
+      <div class="button-group">
+        <button (click)="onRemColumn()">- column</button>
+        <button (click)="onAddColumn()">+ column</button>
+      </div>
+    </div>
+    <div class="options-section">
+      <div class="button-group">
+        <button (click)="onClose()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>
