@@ -4,6 +4,8 @@ An interactive implementation of Conway’s Game of Life built with Angular.
 
 ---
 
+![Gliders](/public/gliders.jpg)
+
 ## Features
 
 - 🧠 Conway’s Game of Life rules implementation
